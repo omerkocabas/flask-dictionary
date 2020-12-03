@@ -5,13 +5,21 @@ import requests, json, config
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/words', methods=['GET', 'POST'])
 def words():
-    return render_template('index.html')
+    if request.method == 'POST':
+        input_word = request.form['title']
+
+
+        return redirect('/words/'+input_word)
+    else:
+        return render_template('search.html')
+
+
 
 
 
@@ -23,6 +31,7 @@ def meaning(searched_word):
 
     api_response = requests.get(http_link, params=parameters)
     response_dictionary = api_response.json()
+
     if(api_response.status_code!=200):
         return "Invalid input"
     elif(api_response.status_code==200):
@@ -30,7 +39,8 @@ def meaning(searched_word):
             return "No such word exists."
         else:
             all_meanings = response_dictionary["def"][0]["tr"]
-            return render_template('word.html', value=all_meanings)
+            length = len(all_meanings)
+            return render_template('word.html', value=all_meanings, length = length)
 
 
 

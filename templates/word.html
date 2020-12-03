@@ -9,9 +9,11 @@
 
 
 <hr>
+    {% for i in range(length)  %}
 
-    First Meaning: {{value[0]["text"]}}
-
+    {{i+1}}. Meaning: {{value[i]["text"]}}
+<br>
+    {% endfor %}
 
 <hr>
 
